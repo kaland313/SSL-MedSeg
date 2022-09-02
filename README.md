@@ -91,7 +91,7 @@ self_supervised/byol-acdc.sh
 
 Different pretraining strategies can be configured by modifying the value for the  `--pretrained_weights` and `--max_epochs` configs in `self_supervised/byol-acdc.sh`
 
-| Pre-training approach           | Corresponding arrow on the figure above                      | `--pretrained_weights`               | `--max_epochs` | Published pretrained model                                   |
+| Pre-training approach           | Corresponding arrow on the figure above                      | `--pretrained_weights`               | `--max_epochs` | Published pretrained model <br /> [[models.zip](https://github.com/kaland313/SSL-MedSeg/releases/download/v1.0/models.zip)]|
 | ------------------------------- | ------------------------------------------------------------ | ------------------------------------ | -------------- | ------------------------------------------------------------ |
 | Supervised ImageNet + BYOL ACDC | ![arrow-hierarchical-supervised](.github/arrow-hierarchical-supervised.svg)(1st step) | `supervised_imagenet`                | 25             | `models/supervised-imagenet-byol-acdc-ep=25.pth` |
 | BYOL ImageNet + BYOL ACDC       | ![arrow-hierarchical-selfsupervised](.github/arrow-hierarchical-selfsupervised.svg) (1st step) | `resnet50_byol_imagenet2012.pth.tar` | 25             | `models/byol-imagenet-acdc-ep=34.ckpt`<br />and  <br />`models/byol-imagenet-acdc-ep=25.pth` |
