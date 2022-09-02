@@ -46,7 +46,7 @@ Specify the path for the dataset in:
 
 ### Slurm
 
-For hyperparamter sweeps and running many experiments in a batch, we use [Slurm](https://slurm.schedmd.com/documentation.html) jobs, therefore an installed and configured Slurm environment is required for these runs. However based on [supervised_segmentation/sweep_configs/data_eff_learning_2.sh](supervised_segmentation/sweep_configs/data_eff_learning_2.sh) and [supervised_segmentation/sweep_configs/grid_search_helper.py](supervised_segmentation/sweep_configs/grid_search_helper.py) other methods of running experiments in a batch can be implemented. 
+For hyperparamter sweeps and running many experiments in a batch, we use [Slurm](https://slurm.schedmd.com/documentation.html) jobs, therefore an installed and configured Slurm environment is required for these runs. However based on [supervised_segmentation/sweeps/data_eff_learning.sh](supervised_segmentation/sweeps/data_eff_learning.sh) and [supervised_segmentation/sweeps/grid_search_helper.py](supervised_segmentation/sweeps/grid_search_helper.py) other methods of running experiments in a batch can be implemented. 
 
 
 
