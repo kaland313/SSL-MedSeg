@@ -127,3 +127,16 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.vscode/
+artifacts*/
+wandb/
+inference/
+trained_models/
+
+*pth.tar
+*pdf
+*.npy
+*.pth
+*.ckpt
+

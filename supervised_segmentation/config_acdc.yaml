@@ -1,0 +1,40 @@
+seed: 42
+
+num_workers: 8
+experiment_name: "Swp_{model_encoder_weights:}"
+# Note: experiment_name is interptreted as a format string with all other config options: e.g {optimizer_lr}
+# More complex examples: "Swp_lr{optimizer_lr}_{loss}_{scheduler_type}"
+# Swp_Subset{subset_ratio}_{model_encoder_weights:.18}_oversampling
+
+wandb_tag: ""
+
+dataset_root: "~/data/acdc/training/"
+subset_ratio: 1.0
+artifacts_root: "artifacts-acdc/supervised"
+
+trainer:
+  gpus: 1
+  max_epochs: 150
+  benchmark: True
+  precision: 16
+  gradient_clip_val: 5.0
+
+model:
+  encoder_name: "tu-resnet50"
+  encoder_weights: "byol-imagenet-acdc-resnet50-400ep-2g23apon-ep=34.ckpt" 
+  freeze_encoder_weights_epochs : 0
+  pretrained_decoder: False
+
+scheduler:
+  type: pl_bolts.optimizers.lr_scheduler.LinearWarmupCosineAnnealingLR
+  warmup_epochs: 10
+  max_epochs: 150
+  warmup_start_lr: 1.0e-6
+
+loss: "JaccardLoss"
+
+batch_size: 192
+
+optimizer:
+  type: torch.optim.Adam
+  lr: 0.0001
