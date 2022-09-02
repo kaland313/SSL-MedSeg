@@ -7,12 +7,12 @@ subset_ratios=(0.001, 0.002, 0.005, 0.01, 0.02,
                0.05, 0.1, 0.2, 0.5, 1.0
                )
 encoders=(
-          "imagenet",                                                           # -> Supervised Imagenet
-          "resnet50_byol_imagenet2012.pth.tar",                                 # -> BYOL Imagenet
-          "byol_acdc_backbone_last.pth",                                        # -> BYOL ACDC
-          "byol-imagenet-acdc-resnet50-400ep-2g23apon-ep=34.ckpt",              # -> BYOL Imagenet + BYOL ACDC
-          "MoreCkpts_BYOL-Imagenet-Acdc_oldaugs-eix2ba1c-ep=25.pth",            # -> BYOL Imagenet + BYOL ACDC
-          "MoreCkpts_supervised-imagenet_byol-acdc_oldaugs-1pbohdn9-ep=25.pth", # -> Supervised Imagenet + BYOL ACDC
+          "imagenet",                                 # -> Supervised Imagenet
+          "resnet50_byol_imagenet2012.pth.tar",       # -> BYOL Imagenet
+          "byol_acdc_backbone_last.pth",              # -> BYOL ACDC
+          "byol-imagenet-acdc-ep=34.ckpt",            # -> BYOL Imagenet + BYOL ACDC
+          "byol-imagenet-acdc-ep=25.pth",             # -> BYOL Imagenet + BYOL ACDC
+          "supervised-imagenet-byol-acdc-ep=25.pth",  # -> Supervised Imagenet + BYOL ACDC
           )
 seeds=(0, 13, 42, 
        123, 1111,

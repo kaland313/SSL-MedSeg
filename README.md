@@ -72,8 +72,8 @@ To initialize the downstream training with different pretrained models, we provi
 | ------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Supervised ImageNet             | ![arrow-generalist-supervised](.github/arrow-generalist-supervised.svg) | `supervised_imagenet`                                        |
 | BYOL ImageNet                   | ![arrow-generalist-selfsupervised](.github/arrow-generalist-selfsupervised.svg) | `resnet50_byol_imagenet2012.pth.tar`                         |
-| Supervised ImageNet + BYOL ACDC | ![arrow-hierarchical-supervised](.github/arrow-hierarchical-supervised.svg) (2nd step) | `MoreCkpts_supervised-imagenet_byol-acdc_oldaugs-1pbohdn9-ep=25.pth` |
-| BYOL ImageNet + BYOL ACDC       | ![arrow-hierarchical-selfsupervised](.github/arrow-hierarchical-selfsupervised.svg) (2nd step) | `byol-imagenet-acdc-resnet50-400ep-2g23apon-ep=34.ckpt`<br />or <br />`MoreCkpts_BYOL-Imagenet-Acdc_oldaugs-eix2ba1c-ep=25.pth` |
+| Supervised ImageNet + BYOL ACDC | ![arrow-hierarchical-supervised](.github/arrow-hierarchical-supervised.svg) (2nd step) | `supervised-imagenet-byol-acdc-ep=25.pth` |
+| BYOL ImageNet + BYOL ACDC       | ![arrow-hierarchical-selfsupervised](.github/arrow-hierarchical-selfsupervised.svg) (2nd step) | `byol-imagenet-acdc-ep=34.ckpt`<br />or <br />`byol-imagenet-acdc-ep=25.pth` |
 | BYOL ACDC                       | ![arrow-specialist](.github/arrow-specialist.svg)            | `byol_acdc_backbone_last.pth`                                |
 
 ### Pretraining
@@ -93,8 +93,8 @@ Different pretraining strategies can be configured by modifying the value for th
 
 | Pre-training approach           | Corresponding arrow on the figure above                      | `--pretrained_weights`               | `--max_epochs` | Published pretrained model                                   |
 | ------------------------------- | ------------------------------------------------------------ | ------------------------------------ | -------------- | ------------------------------------------------------------ |
-| Supervised ImageNet + BYOL ACDC | ![arrow-hierarchical-supervised](.github/arrow-hierarchical-supervised.svg)(1st step) | `supervised_imagenet`                | 25             | `models/MoreCkpts_supervised-imagenet_byol-acdc_oldaugs-1pbohdn9-ep=25.pth` |
-| BYOL ImageNet + BYOL ACDC       | ![arrow-hierarchical-selfsupervised](.github/arrow-hierarchical-selfsupervised.svg) (1st step) | `resnet50_byol_imagenet2012.pth.tar` | 25             | `models/byol-imagenet-acdc-resnet50-400ep-2g23apon-ep=34.ckpt`<br />and  <br />`models/MoreCkpts_BYOL-Imagenet-Acdc_oldaugs-eix2ba1c-ep=25.pth` |
+| Supervised ImageNet + BYOL ACDC | ![arrow-hierarchical-supervised](.github/arrow-hierarchical-supervised.svg)(1st step) | `supervised_imagenet`                | 25             | `models/supervised-imagenet-byol-acdc-ep=25.pth` |
+| BYOL ImageNet + BYOL ACDC       | ![arrow-hierarchical-selfsupervised](.github/arrow-hierarchical-selfsupervised.svg) (1st step) | `resnet50_byol_imagenet2012.pth.tar` | 25             | `models/byol-imagenet-acdc-ep=34.ckpt`<br />and  <br />`models/byol-imagenet-acdc-ep=25.pth` |
 | BYOL ACDC                       | ![arrow-specialist](.github/arrow-specialist.svg)            | `None`                               | 400            | `models/byol_acdc_backbone_last.pth`                         |
 
 We publish pretrained models for these pretrainings as specified in the last column of the table

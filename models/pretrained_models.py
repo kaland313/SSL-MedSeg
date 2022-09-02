@@ -13,15 +13,15 @@ pretrained_model_zoo = {
         "top_level_dict_key": None,
         "prefix_to_remove": ''
     },
-    "byol-imagenet-acdc-resnet50-400ep-2g23apon-ep=34.ckpt":{
+    "byol-imagenet-acdc-ep=34.ckpt":{
         "top_level_dict_key": 'state_dict',
         "prefix_to_remove": 'momentum_backbone.'
     },
-    "MoreCkpts_BYOL-Imagenet-Acdc_oldaugs-eix2ba1c-ep=25.pth":{
+    "byol-imagenet-acdc-ep=25.pth":{
         "top_level_dict_key": None,
         "prefix_to_remove": 'momentum_backbone.'
     },
-    "MoreCkpts_supervised-imagenet_byol-acdc_oldaugs-1pbohdn9-ep=25.pth":{
+    "supervised-imagenet-byol-acdc-ep=25.pth":{
         "top_level_dict_key": None,
         "prefix_to_remove": 'momentum_backbone.'
     },
@@ -104,7 +104,7 @@ def adapt_input_conv(in_chans, conv_weight):
     """
     Based on: https://github.com/rwightman/pytorch-image-models/blob/7cd4204a289cd0dddad925c076cdb96ae9670e87/timm/models/helpers.py
     """
-    
+
     conv_type = conv_weight.dtype
     O, I, J, K = conv_weight.shape
     if I == in_chans:

@@ -21,7 +21,7 @@ trainer:
 
 model:
   encoder_name: "tu-resnet50"
-  encoder_weights: "byol-imagenet-acdc-resnet50-400ep-2g23apon-ep=34.ckpt" 
+  encoder_weights: "byol-imagenet-acdc-ep=34.ckpt" 
   freeze_encoder_weights_epochs : 0
   pretrained_decoder: False
 
