@@ -7,11 +7,15 @@ This repository is the official implementation of [Self-Supervised Pretraining f
 If you use our code or results, please cite our paper: 
 
 ```
-@unpublished{citekey,
-  author = "Kalapos, András and Gyires-Tóth, Bálint",
-  title  = "{Self-Supervised Pretraining for 2D Medical Image Segmentation}",
-  year   = "2022",
+@InProceedings{Kalapos2022,
+  author    = {{András Kalapos} and {Bálint Gyires-Tóth}},
+  booktitle = {Computer Vision - ECCV 2022 Workshops},
+  title     = {{Self-Supervised Pretraining for 2D Medical Image Segmentation}},
+  year      = {2022},
+  note      = {Official proceedings to be published in February 2023. Preprint URL \url{https://arxiv.org/abs/2209.00314}},
+  eprint    = {https://arxiv.org/abs/2209.00314},
 }
+
 ```
 
 
