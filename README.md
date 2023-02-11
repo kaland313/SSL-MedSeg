@@ -1,6 +1,6 @@
 # Self-Supervised Pretraining for 2D Medical Image Segmentation
 
-This repository is the official implementation of [Self-Supervised Pretraining for 2D Medical Image Segmentation (arXiv preprint, accepted for the AIMIA workshop at ECCV 2022)](https://arxiv.org/abs/2209.00314). 
+This repository is the official implementation of [Self-Supervised Pretraining for 2D Medical Image Segmentation (accepted for the AIMIA workshop at ECCV 2022)](https://doi.org/10.1007/978-3-031-25082-8_31). 
 
 ![pretraining_strategies](.github/pretraining_strategies.svg)
 
@@ -8,12 +8,15 @@ If you use our code or results, please cite our paper:
 
 ```
 @InProceedings{Kalapos2022,
-  author    = {{András Kalapos} and {Bálint Gyires-Tóth}},
-  booktitle = {Computer Vision - ECCV 2022 Workshops},
-  title     = {{Self-Supervised Pretraining for 2D Medical Image Segmentation}},
-  year      = {2022},
-  note      = {Official proceedings to be published in February 2023. Preprint URL \url{https://arxiv.org/abs/2209.00314}},
-  eprint    = {https://arxiv.org/abs/2209.00314},
+  author    = {Kalapos, Andr{\'a}s and Gyires-T{\'o}th, B{\'a}lint},
+  booktitle = {Computer Vision -- ECCV 2022 Workshops},
+  title     = {{Self-supervised Pretraining for 2D Medical Image Segmentation}},
+  year      = {2023},
+  address   = {Cham},
+  pages     = {472--484},
+  publisher = {Springer Nature Switzerland},
+  doi       = {10.1007/978-3-031-25082-8_31},
+  isbn      = {978-3-031-25082-8},
 }
 
 ```
