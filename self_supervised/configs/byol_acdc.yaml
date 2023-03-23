@@ -1,0 +1,64 @@
+defaults:
+  - _self_
+  - augmentations: acdc.yaml
+  - wandb: private.yaml
+  - override hydra/hydra_logging: disabled
+  - override hydra/job_logging: disabled
+
+# disable hydra outputs
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+
+name: "byol-acdc"
+method: "byol"
+backbone:
+  name: "timm_universal" # All backbones supported by solo-learn (e.g. "resnet50") or "timm_universal"
+  kwargs: 
+    model_name: "resnet50" # This config is only allowed if backbone.name == "timm_universal"
+    pretrained_weights: "resnet50_byol_imagenet2012.pth.tar" # "imagenet" / null / "model name from model zoo" / resnet50_byol_imagenet2012.pth.tar
+    in_chans: 1
+method_kwargs:
+  proj_hidden_dim: 4096
+  proj_output_dim: 256
+  pred_hidden_dim: 8192
+momentum:
+  base_tau: 0.99
+  final_tau: 1.0
+data:
+  dataset: "custom"
+  custom_dataset_name: "acdc"
+  train_path: "~/data/acdc/training"
+  format: "image_folder" # data format, supports "image_folder", "dali" or "h5"
+  num_workers: 10
+  # set this to True if the dataset is not stored as subfolders for each class
+  # if no labels are provided, "h5" is not supported
+  # convert a custom dataset by following `scripts/utils/convert_imgfolder_to_h5.py`
+  no_labels: True
+optimizer:
+  name: "lars"
+  batch_size: 128
+  lr: 0.5
+  classifier_lr: 0.1
+  weight_decay: 1e-5
+  kwargs:
+    clip_lr: True
+    eta: 0.02
+    exclude_bias_n_norm: True
+scheduler:
+  name: "warmup_cosine"
+checkpoint:
+  enabled: True
+  dir: "artifacts/pretrain"
+  frequency: 1
+auto_resume:
+  enabled: False
+
+# overwrite PL stuff
+max_epochs: 401
+devices: [0]
+sync_batchnorm: True
+accelerator: "gpu"
+strategy: "ddp"
+precision: 16

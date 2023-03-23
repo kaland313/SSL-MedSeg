@@ -2,6 +2,7 @@ from typing import Any, Callable, List, Optional, Sequence, Type, Union
 from PIL import Image
 import torch
 import albumentations as A
+import numpy as np
 
 class AlbuTransforms:
     def __init__(
@@ -58,7 +59,16 @@ class AlbuTransforms:
             ])
 
     def __call__(self, x: Image) -> torch.Tensor:
-        return self.transform(image=x)
+        sample = self.transform(image=x)
+
+        # Convert images to channels_first mode, from albumentations' 2d grayscale images (if necessary)
+        if isinstance(sample, list):
+            if sample[0]['image'].ndim == 2:
+                sample = [np.expand_dims(s['image'], 0) for s in sample]
+        else:
+            if sample['image'].ndim == 2:
+                sample = np.expand_dims(sample['image'], 0)
+        return 
 
     def __repr__(self) -> str:
         return str(self.transform)

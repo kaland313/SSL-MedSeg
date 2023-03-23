@@ -1,0 +1,49 @@
+- mean: 67.27297657740893
+  std: 84.6606962344396
+  rrc:
+    enabled: True
+    crop_min_scale: 0.08
+    crop_max_scale: 1.0
+  color_jitter:
+    prob: 0.8
+    brightness: 0.2
+    contrast: 0.2
+    saturation: 0.2
+    hue: 0.1
+  grayscale:
+    prob: 0.2
+  gaussian_blur:
+    prob: 0.0
+  solarization:
+    prob: 0.0
+  equalization:
+    prob: 0.0
+  horizontal_flip:
+    prob: 0.5
+  crop_size: 224
+  num_crops: 1
+
+- mean: 67.27297657740893
+  std: 84.6606962344396
+  rrc:
+    enabled: True
+    crop_min_scale: 0.08
+    crop_max_scale: 1.0
+  color_jitter:
+    prob: 0.8
+    brightness: 0.2
+    contrast: 0.2
+    saturation: 0.2
+    hue: 0.1
+  grayscale:
+    prob: 0.2
+  gaussian_blur:
+    prob: 0.0
+  solarization:
+    prob: 0.0
+  equalization:
+    prob: 0.0
+  horizontal_flip:
+    prob: 0.5
+  crop_size: 224
+  num_crops: 1

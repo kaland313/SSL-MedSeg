@@ -3,7 +3,16 @@ import glob
 import shutil
 from tqdm import tqdm
 import pydoc
+import omegaconf
 
+def flatten_dict(d, top_level_key="", sep="_"):
+    flat_d = {}
+    for k, v in d.items():
+        if isinstance(v, (dict, omegaconf.DictConfig)):
+            flat_d.update(flatten_dict (v, top_level_key=(k + sep)))
+        else:
+            flat_d[top_level_key + k] = v
+    return flat_d
 
 def object_from_dict(d, parent=None, **default_kwargs):
     kwargs = d.copy()

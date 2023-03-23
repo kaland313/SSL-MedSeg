@@ -33,12 +33,11 @@ To install pypi requirements:
 pip install -r requirements.txt
 ```
 
-For self-supervised pre-training `solo-learn==1.0.5` is also required. For it's installation, follow instructions in [solo-learn's documentation](https://solo-learn.readthedocs.io/en/latest/start/install.html) (dali, umap support is not needed) or use the following commands: 
+For self-supervised pre-training `solo-learn==1.0.6` is also required. For it's installation, follow instructions in [solo-learn's documentation](https://solo-learn.readthedocs.io/en/latest/start/install.html) (dali, umap support is not needed) or use the following commands: 
 
 ```
 git clone https://github.com/vturrisi/solo-learn.git
 cd solo-learn
-git checkout 1.0.5
 pip3 install -e .
 ```
 

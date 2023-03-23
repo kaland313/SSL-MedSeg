@@ -2,6 +2,8 @@ import numpy as np
 from typing import Any, Dict, Tuple
 import numpy as np
 from torch.utils.data import Dataset
+from PIL import Image
+from solo.data.pretrain_dataloader import FullTransformPipeline
 
 from data.acdc_utils import construct_samples_list, split_samples_list
 
@@ -108,13 +110,9 @@ class ACDCDatasetUnlabeleld(Dataset):
         sample = self.img_cache[file_id][... , slice_id]
 
         if self.transform is not None:
+            if isinstance(self.transform, FullTransformPipeline):
+                sample = Image.fromarray((sample).astype(np.uint8))
             sample = self.transform(sample)
-            
-        # Convert images to channels_first mode, from albumentations' 2d grayscale images
-        if isinstance(sample, list):
-            sample = [np.expand_dims(s['image'], 0) for s in sample]
-        else:
-            sample = np.expand_dims(sample['image'], 0)
 
         return sample, 0
 
