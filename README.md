@@ -134,7 +134,7 @@ Custom segmentation datasets can be loaded via [mmsegmentations's custom dataset
 │   │   │   ├── val
 ```
 
-The following configurations must be specified in [data/config/custom.py]():
+The following configurations must be specified in [data/config/custom.py](data/config/custom.py):
 
 ```
 data_root = PATH_TO_DATASET # Path to custom dataset
@@ -152,7 +152,7 @@ To train the model(s) run this command:
 PYTHONPATH=. python supervised_segmentation/train.py --config_path supervised_segmentation/config_custom.yaml
 ```
 ### Pretraining
-If your custom dataset is in a simple image folder format, solo-learn's built in data loading should handle your dataset (including dali support). In this case you onyl need to specify the following paths in [self_supervised/configs/byol_custom.yaml]()
+If your custom dataset is in a simple image folder format, solo-learn's built in data loading should handle your dataset (including dali support). In this case you onyl need to specify the following paths in [self_supervised/configs/byol_custom.yaml](self_supervised/configs/byol_custom.yaml)
 
 ```
 train_path: "PATH_TO_TRAIN_DIR"
@@ -164,7 +164,7 @@ To run the SSL pretraining on a custom dataset:
 python self_supervised/main_pretrain.py --config-path configs/ --config-name byol_custom.yaml
 ```
 
-For more complex cases you can build a custom dataset class (similar to data.acdc_dataset.ACDCDatasetUnlabeleld) and instantiate it in [self_supervised/main_pretrain.py#L183](). 
+For more complex cases you can build a custom dataset class (similar to data.acdc_dataset.ACDCDatasetUnlabeleld) and instantiate it in [self_supervised/main_pretrain.py#L183](self_supervised/main_pretrain.py#L183). 
 
 ## Copyright 
 
