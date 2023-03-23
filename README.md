@@ -63,13 +63,13 @@ For hyperparamter sweeps and running many experiments in a batch, we use [Slurm]
 To train the model(s) in the paper, run this command: 
 
 ```
-PYTHONPATH=. python supervised_segmentation/train_acdc.py
+PYTHONPATH=. python supervised_segmentation/train.py
 ```
 
 On a Slurm cluster:
 
 ```
-PYTHONPATH=. srun -p gpu --gres=gpu --cpus-per-task=10 python supervised_segmentation/train_acdc.py
+PYTHONPATH=. srun -p gpu --gres=gpu --cpus-per-task=10 python supervised_segmentation/train.py
 ```
 
 To initialize the downstream training with different pretrained models, we provide pretrained weights that we used in our paper. These can be selected by setting the `encoder_weights` config in [supervised_segmentation/config_acdc.yaml](supervised_segmentation/config_acdc.yaml)
@@ -95,7 +95,7 @@ To pretrain a model on the ACDC dataset, run this command:
 python self_supervised/main_pretrain.py --config-path configs/ --config-name byol_acdc.yaml
 ```
 
-Different pretraining strategies can be configured by modifying the value for the  `--pretrained_weights` and `--max_epochs` configs in `self_supervised/byol-acdc.sh`
+Different pretraining strategies can be configured by specifying different `--pretrained_weights` and `--max_epochs` or by modifying the corresponding configs in [self_supervised/config_acdc.yaml]().
 
 | Pre-training approach           | Corresponding arrow on the figure above                      | `--pretrained_weights`               | `--max_epochs` | Published pretrained model <br /> [[models.zip](https://github.com/kaland313/SSL-MedSeg/releases/download/v1.0/models.zip)]|
 | ------------------------------- | ------------------------------------------------------------ | ------------------------------------ | -------------- | ------------------------------------------------------------ |
