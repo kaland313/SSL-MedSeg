@@ -1,15 +1,15 @@
 seed: 42
 
 num_workers: 8
-experiment_name: "ACDC"
+experiment_name: "Custom"
 # Note: experiment_name is interptreted as a format string with all other config options: e.g {optimizer_lr}
 # More complex examples: "Swp_lr{optimizer_lr}_{loss}_{scheduler_type}"
 # Swp_Subset{subset_ratio}_{model_encoder_weights:.18}_oversampling
 
 wandb_tag: ""
 
-dataset: "acdc"
-dataset_root: "~/data/acdc/training/" 
+dataset: "custom"
+dataset_root: "" 
 subset_ratio: 1.0
 
 artifacts_root: "artifacts-acdc/supervised"

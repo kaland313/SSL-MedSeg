@@ -92,7 +92,7 @@ For ImageNet pretraining, we acquire weights from:
 To pretrain a model on the ACDC dataset, run this command: 
 
 ```
-self_supervised/byol-acdc.sh
+python self_supervised/main_pretrain.py --config-path configs/ --config-name byol_acdc.yaml
 ```
 
 Different pretraining strategies can be configured by modifying the value for the  `--pretrained_weights` and `--max_epochs` configs in `self_supervised/byol-acdc.sh`
@@ -110,8 +110,61 @@ We publish pretrained models for these pretrainings as specified in the last col
 To evaluate the segmentation model on the ACDC dataset, run:
 
 ```eval
-PYTHONPATH=. python supervised_segmentation/train_acdc.py
+PYTHONPATH=. python supervised_segmentation/inference_acdc.py
 ```
+
+## Custom dataset
+### Supervised segmentation (downstream) training
+Custom segmentation datasets can be loaded via [mmsegmentations's custom dataset](https://mmsegmentation.readthedocs.io/en/latest/api.html#mmseg.datasets.CustomDataset) API. This requires the data to be formatted in the following directory structure:
+
+```
+├── data
+│   ├── custom_dataset
+│   │   ├── img_dir
+│   │   │   ├── train
+│   │   │   │   ├── xxx{img_suffix}
+│   │   │   │   ├── yyy{img_suffix}
+│   │   │   │   ├── zzz{img_suffix}
+│   │   │   ├── val
+│   │   ├── ann_dir
+│   │   │   ├── train
+│   │   │   │   ├── xxx{seg_map_suffix}
+│   │   │   │   ├── yyy{seg_map_suffix}
+│   │   │   │   ├── zzz{seg_map_suffix}
+│   │   │   ├── val
+```
+
+The following configurations must be specified in [data/config/custom.py]():
+
+```
+data_root = PATH_TO_DATASET # Path to custom dataset
+num_classes = NUM_CLASSES # Number of segmentation classes 
+in_channels = IN_CHANNELS  # Number of input channels (e.g. 3 for RGB data)
+class_labels = CLASS_LABELS # Class labels used for logging
+ignore_label = IGNORE_LABEL  # Ignored label during iou metric computation
+img_suffix='.tiff'
+seg_map_suffix = '_gt.tiff'
+```
+
+To train the model(s) run this command: 
+
+```
+PYTHONPATH=. python supervised_segmentation/train.py --config_path supervised_segmentation/config_custom.yaml
+```
+### Pretraining
+If your custom dataset is in a simple image folder format, solo-learn's built in data loading should handle your dataset (including dali support). In this case you onyl need to specify the following paths in [self_supervised/configs/byol_custom.yaml]()
+
+```
+train_path: "PATH_TO_TRAIN_DIR"
+val_path: "PATH_TO_VAL_DIR" # optional
+```
+
+To run the SSL pretraining on a custom dataset:
+```
+python self_supervised/main_pretrain.py --config-path configs/ --config-name byol_custom.yaml
+```
+
+For more complex cases you can build a custom dataset class (similar to data.acdc_dataset.ACDCDatasetUnlabeleld) and instantiate it in [self_supervised/main_pretrain.py#L183](). 
 
 ## Copyright 
 

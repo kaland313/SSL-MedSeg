@@ -17,6 +17,7 @@ import segmentation_models_pytorch as smp
 import torchmetrics
 import wandb
 
+from data.mmseg_dataset import MMseg
 from data.acdc_dataset import ACDCDatasetAlbu, DATASET_MEAN, DATASET_STD
 from models.pretrained_models import get_state_dict_form_pretrained_model_zoo, modify_state_dict, pretrained_model_zoo
 import utils
@@ -28,8 +29,18 @@ class CardiacSegmentation(pl.LightningModule):
         self.save_hyperparameters()
         self.config = config
 
-        self.num_classes = 4
-        self.class_labels = ["BG", "RV", "MYO", "LV"]
+        if self.config["dataset"].lower() == "acdc":
+            self.num_classes = 4
+            self.class_labels = ["BG", "RV", "MYO", "LV"]
+            self.in_channels = 1
+            self.ignore_index = 0 # WARN: This is only used when computing iou metrics
+        else:
+            dataset_config = MMseg.get_config(self.config["dataset"])
+            self.num_classes = dataset_config.num_classes
+            self.in_channels = dataset_config.in_channels
+            self.class_labels = dataset_config.class_labels
+            # WARN: ignore_index is only used when computing iou metrics
+            self.ignore_index = dataset_config.get("ignore_label", None) 
 
         # Instantiating encoder and loading pretrained weights
         encoder_weights = self.config["model"].get("encoder_weights", None)
@@ -43,13 +54,13 @@ class CardiacSegmentation(pl.LightningModule):
         self.model =smp.Unet(
             encoder_name=self.config["model"]["encoder_name"],      # choose encoder, e.g. mobilenet_v2 or efficientnet-b7
             encoder_weights=auto_loaded_encoder_weights,            # for timm models, anything that is Not none will load imagenet weights...
-            in_channels=1,                                          # model input channels (1 for gray-scale images, 3 for RGB, etc.)
+            in_channels=self.in_channels,                           # model input channels (1 for gray-scale images, 3 for RGB, etc.)
             classes=self.num_classes,                               # model output channels (number of classes in your dataset)
         )
 
         
         pretrained_weights = get_state_dict_form_pretrained_model_zoo(self.config["model"]["encoder_weights"], 
-                                                                      in_chans = 1,
+                                                                      in_chans = self.in_channels ,
                                                                       prefix_to_add='model.'
                                                                      )
         if pretrained_weights is not None:                                                            
@@ -67,8 +78,8 @@ class CardiacSegmentation(pl.LightningModule):
         self.loss = smp.losses.__dict__[self.config["loss"]](smp.losses.MULTICLASS_MODE)
         self.val_focal_loss = smp.losses.FocalLoss(smp.losses.MULTICLASS_MODE)
         
-        self.train_iou = torchmetrics.IoU(self.num_classes, ignore_index=0) 
-        self.val_iou = torchmetrics.IoU(self.num_classes, ignore_index=0) 
+        self.train_iou = torchmetrics.JaccardIndex(num_classes=self.num_classes, ignore_index=self.ignore_index) 
+        self.val_iou = torchmetrics.JaccardIndex(num_classes=self.num_classes, ignore_index=self.ignore_index)  
         self.best_val_iou = 0.    
 
         self.example_input_array = torch.zeros((1, 1,224,224))
@@ -78,9 +89,14 @@ class CardiacSegmentation(pl.LightningModule):
         return self.model(batch)
 
     def setup(self, stage=0):
-        self.train_dataset = ACDCDatasetAlbu(self.config["dataset_root"], subset_ratio=self.config["subset_ratio"], oversamle=True)
-        self.val_dataset = ACDCDatasetAlbu(self.config["dataset_root"], split='val')
-        self.test_dataset = ACDCDatasetAlbu(self.config["dataset_root"], split='test')
+        if self.config["dataset"].lower() == "acdc":
+            self.train_dataset = ACDCDatasetAlbu(self.config["dataset_root"], subset_ratio=self.config["subset_ratio"], oversamle=True)
+            self.val_dataset = ACDCDatasetAlbu(self.config["dataset_root"], split='val')
+            self.test_dataset = ACDCDatasetAlbu(self.config["dataset_root"], split='test')
+        else:
+            self.train_dataset = MMseg("train", self.config["dataset"])
+            self.val_dataset = MMseg("val", self.config["dataset"])
+            self.test_dataset = MMseg("test", self.config["dataset"])
         print("Number of  train samples = ", len(self.train_dataset))
         print("Number of val samples = ", len(self.val_dataset))
         print("Number of test samples = ", len(self.test_dataset))
@@ -170,8 +186,8 @@ class CardiacSegmentation(pl.LightningModule):
             self.best_val_iou = val_iou
         self.log("val_metrics/best_mean_iou", self.best_val_iou)
         self.log("val_metrics/focal_loss", self.val_focal_loss(logits, targets))
-        per_class_ious = torchmetrics.functional.iou(logits, targets, absent_score=np.NaN, 
-                                                     num_classes=self.num_classes, reduction='none')
+        per_class_ious = torchmetrics.functional.jaccard_index(logits, targets, absent_score=np.NaN, 
+                                                               num_classes=self.num_classes, average='none')
         for i in range(self.num_classes):
             self.log(f"val_metrics/{self.class_labels[i]}_iou", per_class_ious[i])
 

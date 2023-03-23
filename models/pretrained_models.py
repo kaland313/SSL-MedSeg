@@ -26,7 +26,12 @@ pretrained_model_zoo = {
         "prefix_to_remove": 'momentum_backbone.'
     },
     # General recepie for all ACDC BYOL pretrained models
-    "artifacts-acdc/pretrain/byol/":{
+    "artifacts-acdc/pretrain/byol":{
+        "top_level_dict_key": None,
+        "prefix_to_remove": 'momentum_backbone.'
+    },
+    # General recepie for all BYOL pretrained models
+    "artifacts/pretrain/byol":{
         "top_level_dict_key": None,
         "prefix_to_remove": 'momentum_backbone.'
     },

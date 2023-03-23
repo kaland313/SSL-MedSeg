@@ -140,3 +140,4 @@ trained_models/
 *.pth
 *.ckpt
 
+data/acdc/
