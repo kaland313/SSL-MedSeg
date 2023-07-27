@@ -13,7 +13,7 @@ from tabulate import tabulate
 
 import data.acdc_utils as acdc_utils
 from data.acdc_dataset import ACDCDatasetAlbu, DATASET_MEAN, DATASET_STD
-from supervised_segmentation.train_acdc import CardiacSegmentation
+from supervised_segmentation.train import CardiacSegmentation
 import utils
 
 PRED_FOLDER = "inference"
@@ -35,7 +35,7 @@ def generate_prediction_pdfs(checkpoint_path: str,
     test_augs.append(A.Normalize(mean=(DATASET_MEAN,), std=(DATASET_STD,)))
     test_aug = A.Compose(test_augs)
 
-    ds = ACDCDatasetAlbu(dataset_root, transforms=test_aug, split='test')
+    ds = ACDCDatasetAlbu(os.path.expanduser(dataset_root), transforms=test_aug, split='test')
     # Limit the number of samples considered in the test dataset. IF num_samples < len(ds). Otherwise use the full test set
     indeces = range(0, min(num_samples, len(ds))) 
     ds = Subset(ds, indeces)
@@ -56,11 +56,11 @@ def generate_prediction_pdfs(checkpoint_path: str,
         logits = logits[0, :, :img.shape[-2], :img.shape[-1]] # Remove padding and the minibatch dim
         logits = logits.detach().cpu()
         preds = torch.argmax(logits,dim=0)
-        iou = torchmetrics.functional.iou(preds, targets, 
-                                          ignore_index=None, absent_score=1.0, num_classes=model.num_classes)
+        iou = torchmetrics.functional.jaccard_index(preds, targets, 
+                                                    ignore_index=None, absent_score=1.0, num_classes=model.num_classes)
         ious.append(iou)
-        per_class_ious.append(torchmetrics.functional.iou(preds, targets, 
-                              absent_score=np.NaN, num_classes=model.num_classes, reduction='none'))
+        per_class_ious.append(torchmetrics.functional.jaccard_index(preds, targets, 
+                              absent_score=np.NaN, num_classes=model.num_classes, average='none'))
         confusion_matrix += torchmetrics.functional.confusion_matrix(preds, targets, num_classes=model.num_classes).numpy()
         preds = preds.numpy()
         
@@ -101,13 +101,15 @@ def generate_prediction_pdfs(checkpoint_path: str,
     print("Confusion matrix: \n", confusion_matrix)
     print("=============================")
 
+    if not os.path.exists(os.path.join(output_folder, PRED_FOLDER)):
+        os.makedirs(os.path.join(output_folder, PRED_FOLDER), exist_ok=True)
     labels = ["Background", "Right ventrice (RV)", "Myocardium (MYO)", "Left ventrice (LV)"]
     utils.plot_iou_histograms(np.stack(per_class_ious), labels, os.path.join(output_folder, PRED_FOLDER))
     labels = ["BG", "RV", "MYO", "LV"]
     utils.plot_confmat(confusion_matrix, labels, os.path.join(output_folder, PRED_FOLDER))
 
     if merge_prediction_pdfs:
-        utils.merge_pdfs(output_folder, PRED_FOLDER, "ACDC-Predictions-Test.pdf", remove_individual_pdfs)
+        utils.merge_pdfs(output_folder, PRED_FOLDER, out_file_name="ACDC-Predictions-Test.pdf", remove_files=remove_individual_pdfs)
 
 
     return mean_iou, std_iou, per_class_ious_averaged_over_all_samples, mean_loss, std_loss
@@ -142,7 +144,8 @@ def multi_ckpt_eval(ckpt_paths):
 
 if __name__ == '__main__':
     ckpt_paths = [
-        "artifacts-acdc/run_name/version_x/checkpoints/checkpoint.ckpt",
+        "artifacts-acdc/supervised/experiment_name/version_x/checkpoints/checkpoint.ckpt",
+        # e.g.: "artifacts-acdc/supervised/ACDC/version_0/checkpoints/epoch=121-step=3171.ckpt"
         ]
     
     multi_ckpt_eval(ckpt_paths)

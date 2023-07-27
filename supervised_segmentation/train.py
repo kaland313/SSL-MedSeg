@@ -90,9 +90,9 @@ class CardiacSegmentation(pl.LightningModule):
 
     def setup(self, stage=0):
         if self.config["dataset"].lower() == "acdc":
-            self.train_dataset = ACDCDatasetAlbu(self.config["dataset_root"], subset_ratio=self.config["subset_ratio"], oversamle=True)
-            self.val_dataset = ACDCDatasetAlbu(self.config["dataset_root"], split='val')
-            self.test_dataset = ACDCDatasetAlbu(self.config["dataset_root"], split='test')
+            self.train_dataset = ACDCDatasetAlbu(os.path.expanduser(self.config["dataset_root"]), subset_ratio=self.config["subset_ratio"], oversamle=True)
+            self.val_dataset = ACDCDatasetAlbu(os.path.expanduser(self.config["dataset_root"]), split='val')
+            self.test_dataset = ACDCDatasetAlbu(os.path.expanduser(self.config["dataset_root"]), split='test')
         else:
             self.train_dataset = MMseg("train", self.config["dataset"])
             self.val_dataset = MMseg("val", self.config["dataset"])
