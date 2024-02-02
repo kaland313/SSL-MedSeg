@@ -48,7 +48,7 @@ Download the ACDC Segmentation dataset from: https://acdc.creatis.insa-lyon.fr (
 Specify the path for the dataset in:
 
 - [supervised_segmentation/config_acdc.yaml](supervised_segmentation/config_acdc.yaml) -> `dataset_root:  "<YOUR DATASET PATH>"`
-- [self_supervised/byol-acdc.sh](self_supervised/byol-acdc.sh) -> `--data_dir  <YOUR DATASET PATH>`
+- [self_supervised/configs/byol_acdc.yaml#L32](self_supervised/configs/byol_acdc.yaml#L32) -> `  train_path: "<YOUR DATASET PATH>"`
 
 ### Slurm
 
